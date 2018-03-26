@@ -20,6 +20,10 @@ class BlogController extends Controller
         // view("blog.index", compact('posts'))->render();
         // dd(\DB::getQueryLog());
         return view("blog.index", compact('posts'));
-
     } 
+
+    public function show(Post $post)
+    {
+    	return view("blog.show", compact('post'));
+    }
 }
