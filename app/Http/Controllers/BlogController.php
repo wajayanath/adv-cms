@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\Category;
 
 class BlogController extends Controller
 {
@@ -20,10 +21,24 @@ class BlogController extends Controller
         // view("blog.index", compact('posts'))->render();
         // dd(\DB::getQueryLog());
         return view("blog.index", compact('posts'));
+    }
+
+    public function category(Category $category) 
+    { 
+    	$categoryName = $category->title;
+
+    	// \DB::enableQueryLog();
+    	 $posts = $category->posts()
+    	 			->with('author')
+                    ->latestFirst()
+                    ->published()
+                    ->simplePaginate($this->limit);
+         // dd(\DB::getQueryLog());
+        return view("blog.index", compact('posts', 'categoryName'));
     } 
 
     public function show(Post $post)
     {
-    	return view("blog.show", compact('post'));
+       	return view("blog.show", compact('post'));
     }
 }
